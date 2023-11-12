@@ -1,3 +1,5 @@
 # VatChecker
 
-Usage: java VatChecker countryCode vatNumber
+Example usage:
+
+java SimpleVatChecker SI 44046421
