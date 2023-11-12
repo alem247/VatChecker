@@ -1,3 +1,3 @@
 # VatChecker
 
-Usage: java VatChecker <countryCode> <vatNumber>
+Usage: java VatChecker countryCode vatNumber
