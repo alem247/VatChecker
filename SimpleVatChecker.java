@@ -5,16 +5,14 @@ import java.net.http.HttpResponse;
 
 public class SimpleVatChecker {
 
-    private static final String CHECK_VAT_NUMBER_ENDPOINT = "http://ec.europa.eu/taxation_customs/vies/services/checkVatService";
+    private static final String CHECK_VAT_NUMBER_ENDPOINT = "https://ec.europa.eu/taxation_customs/vies/rest-api/check-vat-test-service";
 
     public static void main(String[] args) {
-        if (args.length != 2) {
-            System.out.println("Usage: java VatChecker <countryCode> <vatNumber>");
-            System.exit(1);
-        }
 
-        String countryCode = args[0];
-        String vatNumber = args[1];
+
+        // no input just for faster testing
+        String countryCode =  "SI";//args[0];
+        String vatNumber = "44046421";//args[1];
 
         VATRequest vatRequest = new VATRequest(countryCode, vatNumber);
         VATInfo vatInfo = checkVatNumber(vatRequest);
@@ -30,6 +28,8 @@ public class SimpleVatChecker {
             String jsonInputString = String.format("{\"countryCode\":\"%s\",\"vatNumber\":\"%s\"}",
                     vatRequest.getCountryCode(), vatRequest.getVatNumber());
 
+            System.out.println(jsonInputString);
+
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(CHECK_VAT_NUMBER_ENDPOINT))
                     .header("Content-Type", "application/json")
@@ -37,6 +37,8 @@ public class SimpleVatChecker {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println(response.body());
 
             return VATInfo.fromJson(response.body());
         } catch (Exception e) {

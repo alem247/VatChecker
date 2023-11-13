@@ -5,8 +5,6 @@ public class VATInfo {
     private String name;
     private String address;
 
-    // generate constructors, getters and setters
-
     public VATInfo() {
     }
 
