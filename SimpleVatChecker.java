@@ -5,10 +5,9 @@ import java.net.http.HttpResponse;
 
 public class SimpleVatChecker {
 
-    private static final String CHECK_VAT_NUMBER_ENDPOINT = "https://ec.europa.eu/taxation_customs/vies/rest-api/check-vat-test-service";
+    private static final String CHECK_VAT_NUMBER_ENDPOINT = "https://ec.europa.eu/taxation_customs/vies/rest-api/check-vat-number";
 
     public static void main(String[] args) {
-
 
         // no input just for faster testing
         String countryCode =  "SI";//args[0];
@@ -28,8 +27,6 @@ public class SimpleVatChecker {
             String jsonInputString = String.format("{\"countryCode\":\"%s\",\"vatNumber\":\"%s\"}",
                     vatRequest.getCountryCode(), vatRequest.getVatNumber());
 
-            System.out.println(jsonInputString);
-
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(CHECK_VAT_NUMBER_ENDPOINT))
                     .header("Content-Type", "application/json")
@@ -39,6 +36,7 @@ public class SimpleVatChecker {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
             System.out.println(response.body());
+            System.out.println(response.statusCode());
 
             return VATInfo.fromJson(response.body());
         } catch (Exception e) {
