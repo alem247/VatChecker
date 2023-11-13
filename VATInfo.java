@@ -23,22 +23,22 @@ public class VATInfo {
     public void setAddress(String address) {
         this.address = address;
     }
-
+    // brez eksternih librarijev
     public static VATInfo fromJson(String json) {
         VATInfo vatInfo = new VATInfo();
-        int nameIndex = json.indexOf("\"name\":");
-        int addressIndex = json.indexOf("\"address\":");
 
+        int nameIndex = json.indexOf("\"name\"");
         if (nameIndex != -1) {
-            int nameStart = json.indexOf("\"", nameIndex + 7);
-            int nameEnd = json.indexOf("\"", nameStart + 1);
-            vatInfo.setName(json.substring(nameStart + 1, nameEnd));
+            int nameStartIndex = json.indexOf("\"", nameIndex + 7) + 1;
+            int nameEndIndex = json.indexOf("\"", nameStartIndex);
+            vatInfo.setName(json.substring(nameStartIndex, nameEndIndex));
         }
 
+        int addressIndex = json.indexOf("\"address\"");
         if (addressIndex != -1) {
-            int addressStart = json.indexOf("\"", addressIndex + 10);
-            int addressEnd = json.indexOf("\"", addressStart + 1);
-            vatInfo.setAddress(json.substring(addressStart + 1, addressEnd));
+            int addressStartIndex = json.indexOf("\"", addressIndex + 10) + 1;
+            int addressEndIndex = json.indexOf("\"", addressStartIndex);
+            vatInfo.setAddress(json.substring(addressStartIndex, addressEndIndex));
         }
 
         return vatInfo;

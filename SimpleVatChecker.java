@@ -2,6 +2,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Scanner;
 
 public class SimpleVatChecker {
 
@@ -9,15 +10,19 @@ public class SimpleVatChecker {
 
     public static void main(String[] args) {
 
-        // no input just for faster testing
-        String countryCode =  "SI";//args[0];
-        String vatNumber = "44046421";//args[1];
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Vnesi davcno stevilko v formatu SI XXXXXXXX: ");
+        String input = sc.nextLine();
+        System.out.println("--------------------------------------------------------");
+        String countryCode =  "SI";
+        String vatNumber = input.substring(3);
 
         VATRequest vatRequest = new VATRequest(countryCode, vatNumber);
         VATInfo vatInfo = checkVatNumber(vatRequest);
 
         System.out.println(vatInfo.getName());
         System.out.println(vatInfo.getAddress());
+        System.out.println("--------------------------------------------------------");
     }
 
     private static VATInfo checkVatNumber(VATRequest vatRequest) {
@@ -34,9 +39,6 @@ public class SimpleVatChecker {
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-            System.out.println(response.body());
-            System.out.println(response.statusCode());
 
             return VATInfo.fromJson(response.body());
         } catch (Exception e) {
